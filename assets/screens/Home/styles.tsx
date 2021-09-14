@@ -7,6 +7,12 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
     },
+    textInput: {
+      height: 40,
+      width: 120,
+      color: "#52575d",
+      borderWidth: 1,
+  }
   });
   
 

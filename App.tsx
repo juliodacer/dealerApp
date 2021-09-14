@@ -14,9 +14,9 @@ const Drawer = createDrawerNavigator();
 const App = () => {
   return (
     <NavigationContainer>
-      <Drawer.Navigator drawerContent={props => <DrawerContent {...props} />}>
-        <Drawer.Screen name="Home" component={Home} />
-        <Drawer.Screen name="Perfil" component={Profile} />
+      <Drawer.Navigator drawerContent={props => <DrawerContent {...props}/>}>
+        <Drawer.Screen name="Home" component={Home} options={{headerShown: false}} />
+        <Drawer.Screen name="Perfil" component={Profile} options={{headerShown: false}}/>
         <Drawer.Screen name="Historial" component={History} />
         <Drawer.Screen name="CuentaPendiente" component={PendingAccunt} />
         <Drawer.Screen name="CuentaAhorros" component={SavingAccount} />
