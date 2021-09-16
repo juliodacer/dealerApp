@@ -8,6 +8,7 @@ import History from './assets/screens/History/History';
 import PendingAccunt from './assets/screens/PendingAccount/PendingAccount';
 import SavingAccount from './assets/screens/SavingsAccount/SavingAccount';
 import OrderBox from './assets/screens/OrderBox/OrderBox';
+import Help from './assets/screens/Help/Help';
 
 const Drawer = createDrawerNavigator();
 
@@ -21,6 +22,7 @@ const App = () => {
         <Drawer.Screen name="CuentaPendiente" component={PendingAccunt} />
         <Drawer.Screen name="CuentaAhorros" component={SavingAccount} />
         <Drawer.Screen name="BuzonEspera" component={OrderBox} />
+        <Drawer.Screen name="Ayuda" component={Help} />
       </Drawer.Navigator>
       </NavigationContainer>
   );

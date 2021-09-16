@@ -10,7 +10,7 @@ function Profile(props) {
     /* Camera */
     const [hasPermission, setHasPermission] = useState(null);
     const [type, setType] = useState(Camera.Constants.Type.back);
-    
+
     /* Modal */
     const [view, setView] = useState(false);
 
@@ -60,18 +60,18 @@ function Profile(props) {
 
     const openCamera = () => (
         <Camera type={type}>
-          <View >
-            <TouchableOpacity
-              onPress={() => {
-                setType(
-                  type === Camera.Constants.Type.back
-                    ? Camera.Constants.Type.front
-                    : Camera.Constants.Type.back
-                );
-              }}>
-              <Text style={styles.text}> Flip </Text>
-            </TouchableOpacity>
-          </View>
+            <View >
+                <TouchableOpacity
+                    onPress={() => {
+                        setType(
+                            type === Camera.Constants.Type.back
+                                ? Camera.Constants.Type.front
+                                : Camera.Constants.Type.back
+                        );
+                    }}>
+                    <Text style={styles.text}> Flip </Text>
+                </TouchableOpacity>
+            </View>
         </Camera>
     )
 
@@ -85,19 +85,16 @@ function Profile(props) {
                 <Icon name="ellipsis-v" size={20} color="#52575d" />
             </View>
             <ScrollView showsVerticalScrollIndicator={false}>
-
                 <View style={{ alignSelf: "center", marginTop: 10 }}>
                     <View style={styles.profileImage}>
                         {image && <Image source={{ uri: image }} style={styles.image} />}
                         {/* <Image source={{ uri: "https://upload.wikimedia.org/wikipedia/commons/e/e8/Ronaldinho_in_2019.jpg" }} style={styles.image} /> */}
                     </View>
-
                     <View style={styles.add}>
                         <TouchableOpacity onPress={() => { setView(true) }}>
                             <Icon name="pencil-alt" size={20} color="#fff" />
                         </TouchableOpacity>
                     </View>
-
                 </View>
                 <View style={{ flex: 1 }}>
                     <View style={styles.infoContainer}>
@@ -158,7 +155,7 @@ function Profile(props) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#f8f8f8',
     },
     text: {
         color: "#52575D",
@@ -172,8 +169,11 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        marginTop: 40,
-        marginHorizontal: 16,
+        paddingTop: 40,
+        paddingBottom: 10,
+        paddingHorizontal: 30,
+        elevation: 7,
+        backgroundColor: "#fff"
     },
     profileImage: {
         width: 200,

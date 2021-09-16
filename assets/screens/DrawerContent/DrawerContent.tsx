@@ -83,6 +83,13 @@ export default class DrawerContent extends Component {
                                 label="Buzon de espera"
                                 onPress={() => this.props.navigation.navigate("BuzonEspera")}
                             />
+                             <DrawerItem
+                                icon={({ color, size }) => (
+                                    <Icon name="hands-helping" color={color} size={size} style={{ paddingHorizontal: 0 }} />
+                                )}
+                                label="Ayuda"
+                                onPress={() => this.props.navigation.navigate("Ayuda")}
+                            />
                         </Drawer.Section>
                         <Drawer.Section>
                             <TouchableRipple>
