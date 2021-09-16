@@ -1,8 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, ScrollView, Image, TextInput, Alert } from 'react-native'
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import OrderContext from '../../context/orders/orderContexts';
+import { useNavigation } from '@react-navigation/native';
 
 const OrderBox = () => {
 
@@ -72,15 +74,20 @@ const OrderBox = () => {
         // }
     ])
 
+    const { selectOrder } = useContext(OrderContext);
+
     const [textInput, setTextInput] = useState('');
 
-    React.useEffect(() => {
-        getOrdersFromUserDevice();
-    }, []);
+    //hook para redireccionar
+    const navigation = useNavigation();
 
-    React.useEffect(() => {
-        saveOrdersToUserDevice(orders);
-    }, [orders]);
+    // React.useEffect(() => {
+    //     getOrdersFromUserDevice();
+    // }, []);
+
+    // React.useEffect(() => {
+    //     saveOrdersToUserDevice(orders);
+    // }, [orders]);
 
     const addOrder = () => {
         if (textInput == '') {
@@ -100,25 +107,25 @@ const OrderBox = () => {
         }
     };
 
-    const saveOrdersToUserDevice = async orders => {
-        try {
-            const stringifyOrders = JSON.stringify(orders);
-            await AsyncStorage.setItem('orders', stringifyOrders);
-        } catch (error) {
-            console.log(error);
-        }
-    };
+    // const saveOrdersToUserDevice = async orders => {
+    //     try {
+    //         const stringifyOrders = JSON.stringify(orders);
+    //         await AsyncStorage.setItem('orders', stringifyOrders);
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // };
 
-    const getOrdersFromUserDevice = async () => {
-        try {
-            const orders = await AsyncStorage.getItem('orders');
-            if (orders != null) {
-                setOrders(JSON.parse(orders));
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
+    // const getOrdersFromUserDevice = async () => {
+    //     try {
+    //         const orders = await AsyncStorage.getItem('orders');
+    //         if (orders != null) {
+    //             setOrders(JSON.parse(orders));
+    //         }
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // };
 
     const confirmOrder = orderId => {
         console.log(orderId)
@@ -172,8 +179,25 @@ const OrderBox = () => {
                     </View>
 
                     <View style={{ flexDirection: "row", width: "30%" }}>
-                        <TouchableOpacity disabled={order?.available ? false : true} onPress={() => confirmOrder(order?.id)} style={{ marginRight: 10, backgroundColor: order?.available ? "green" : "#88FD85", height: 50, width: 50, justifyContent: "center", alignItems: "center", borderRadius: 5 }}>
-                            <Text style={{ fontWeight: "bold", fontSize: 20, color: "#fff" }}>Si</Text>
+                        <TouchableOpacity
+                            disabled={order?.available ? false : true}
+                            onPress={() => { 
+                                selectOrder(order);
+                                navigation.navigate("DetallePedido");}
+                            }
+                            style={{
+                                marginRight: 10, backgroundColor: order?.available ? "green" : "#88FD85",
+                                height: 50,
+                                width: 50,
+                                justifyContent: "center", alignItems: "center", borderRadius: 5
+                            }}>
+
+                            <Text style={{
+                                fontWeight: "bold",
+                                fontSize: 20,
+                                color: "#fff"
+                            }}
+                            >Si</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity disabled={order?.available ? false : true} onPress={() => deleteOrder(order?.id)} style={{ marginRight: 10, backgroundColor: order?.available ? "red" : "#FD8585", height: 50, width: 50, justifyContent: "center", alignItems: "center", borderRadius: 5 }}>
