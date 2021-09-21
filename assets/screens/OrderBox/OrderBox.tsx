@@ -11,20 +11,20 @@ const OrderBox = () => {
     const [orders, setOrders] = useState([
         {
             id: 1,
-            product: "Pedido 1",
+            product: "Helado de Vainilla con sabor a fresa",
             image: "https://cdn.pixabay.com/photo/2016/03/23/15/00/ice-cream-1274894_960_720.jpg",
             price: 25,
-            origin: "Origen 1",
-            destiny: "Tienda 1",
+            origin: "Heladeria Rosita",
+            destiny: "Jr Callao 287",
             available: true
         },
         {
             id: 2,
-            product: "Pedido 2",
+            product: "Fresas con sabor a vainilla",
             image: "https://cdn.pixabay.com/photo/2017/01/31/09/30/raspberries-2023404_960_720.jpg",
             price: 30,
-            origin: "Origen 2",
-            destiny: "Tienda 2",
+            origin: "Frutas de Canadá",
+            destiny: "Calle Tacna 568",
             available: true
         },
         // {
@@ -164,44 +164,76 @@ const OrderBox = () => {
         ]);
     };
 
+    const acceptOrder = orderId => {
+       if(orders.orderId == false) {
+        Alert.alert('Ups!', 'Este pedido ya no está disponible', [
+            {
+                text: 'Ok',
+            },
+            {
+                text: 'Caballero nomas, ya perdí',
+            },
+        ]);
+       }
+    };
 
     const ListItem = ({ order }) => {
         return (
             <SafeAreaView style={[styles.cartCard, { backgroundColor: order?.available ? "#fff" : "#E8E823" }]}>
-                <Image source={{ uri: order.image }} style={{ height: 80, width: 80, borderRadius: 10 }} />
-                <View style={{ height: 100, marginLeft: 15, paddingVertical: 20, flex: 1, flexDirection: "row", alignItems: "center" }}>
-                    <View style={{ width: 135 }}>
-                        <Text style={{
-                            fontSize: 18,
+                <Image source={{ uri: order.image }} style={{ height: 80, width: 80, borderRadius: 10, marginLeft: 3 }} />
+                <View style={{ height: 100, marginHorizontal: 5, paddingVertical: 10, flex: 1, flexDirection: "row", alignItems: "center" }}>
+                    <View style={{ width: 160, marginRight: 5 }}>
+                        <View style={{ flexDirection: "row", alignItems: "center", marginVertical: 3 }}>
+                            <Icon name="utensils" size={12} style={{ marginRight: 6, marginLeft: 3}} />
+                            <Text style={{
+                                fontSize: 15,
+                                color: order?.available ? '#000' : "green",
+                                fontWeight: "bold"
+                            }}>{order?.product}</Text>
+                        </View>
+                        <View style={{ flexDirection: "row", alignItems: "center",marginVertical: 3 }}>
+                            <Icon name="store" size={12} style={{ marginRight: 5 }} />
+                            <Text style={{
+                                fontSize: 15,
+                                color: order?.available ? '#000' : "green",
+                                fontWeight: "bold"
+                            }}>{order?.origin}</Text>
+                        </View>
+                       <View style={{ flexDirection: "row", alignItems: "center", marginVertical: 3 }}>
+                       <Icon name="street-view" size={12} style={{ marginRight: 5, marginLeft: 2}} />
+                       <Text style={{
+                            fontSize: 15,
                             color: order?.available ? '#000' : "green",
-                            fontWeight: order?.available ? 'normal' : "bold"
-                        }}>{order?.product}</Text>
+                            fontWeight: "bold"
+                        }}>{order?.destiny}</Text>
+                       </View>
                     </View>
 
                     <View style={{ flexDirection: "row", width: "30%" }}>
                         <TouchableOpacity
                             disabled={order?.available ? false : true}
-                            onPress={() => { 
+                            onPress={() => {
                                 selectOrder(order);
-                                navigation.navigate("DetallePedido");}
+                                navigation.navigate("DetallePedido");
+                            }
                             }
                             style={{
-                                marginRight: 10, backgroundColor: order?.available ? "green" : "#88FD85",
+                                marginRight: 3, backgroundColor: order?.available ? "green" : "#88FD85",
                                 height: 50,
-                                width: 50,
+                                width: 60,
                                 justifyContent: "center", alignItems: "center", borderRadius: 5
                             }}>
 
                             <Text style={{
                                 fontWeight: "bold",
-                                fontSize: 20,
+                                fontSize: 15,
                                 color: "#fff"
                             }}
-                            >Si</Text>
+                            >Aceptar</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity disabled={order?.available ? false : true} onPress={() => deleteOrder(order?.id)} style={{ marginRight: 10, backgroundColor: order?.available ? "red" : "#FD8585", height: 50, width: 50, justifyContent: "center", alignItems: "center", borderRadius: 5 }}>
-                            <Text style={{ fontWeight: "bold", fontSize: 20, color: "#fff" }}>No</Text>
+                        <TouchableOpacity disabled={order?.available ? false : true} onPress={() => deleteOrder(order?.id)} style={{ marginRight: 10, backgroundColor: order?.available ? "red" : "#FD8585", height: 50, width: 70, justifyContent: "center", alignItems: "center", borderRadius: 5 }}>
+                            <Text style={{ fontWeight: "bold", fontSize: 15, color: "#fff" }}>Rechazar</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -215,8 +247,8 @@ const OrderBox = () => {
                 <Icon name="angle-left" size={28} />
                 <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Buzon de espera</Text>
             </View>
-            <View style={{ alignItems: "center", marginRight: 20, flexDirection: "row", justifyContent: "flex-end" }}>
-                <Text style={{ fontSize: 20, fontWeight: 'bold', marginRight: 10 }}>Elimiar todo</Text>
+            <View style={{ marginTop:15, alignItems: "center", marginRight: 20, flexDirection: "row", justifyContent: "flex-end" }}>
+                <Text style={{ fontSize: 20, fontWeight: 'bold', marginRight: 10 }}>Eliminar todo</Text>
                 <TouchableOpacity>
                     <Icon name="times-circle" color={"red"} size={20} onPress={clearAllOrders} />
                 </TouchableOpacity>
@@ -255,12 +287,12 @@ const styles = StyleSheet.create({
         marginHorizontal: 20,
     },
     cartCard: {
-        height: 100,
+        height: 95,
         elevation: 15,
         borderRadius: 10,
         marginVertical: 10,
-        marginHorizontal: 20,
-        paddingHorizontal: 10,
+        marginHorizontal: 4,
+        paddingHorizontal: 2,
         flexDirection: 'row',
         alignItems: 'center'
     },

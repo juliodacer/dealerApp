@@ -24,7 +24,7 @@ const App = () => {
           <Drawer.Screen name="Historial" component={History} />
           <Drawer.Screen name="CuentaPendiente" component={PendingAccunt} />
           <Drawer.Screen name="CuentaAhorros" component={SavingAccount} />
-          <Drawer.Screen name="BuzonEspera" component={OrderBox} />
+          <Drawer.Screen name="BuzonEspera" component={OrderBox} options={{ headerShown: false }} />
           <Drawer.Screen name="Ayuda" component={Help} />
           <Drawer.Screen name="DetallePedido" component={OrderDetail} />
         </Drawer.Navigator>
