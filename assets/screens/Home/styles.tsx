@@ -9,10 +9,16 @@ const styles = StyleSheet.create({
     },
     textInput: {
       height: 40,
-      width: 120,
-      color: "#52575d",
-      borderWidth: 1,
-  }
+      width: 80,
+      textAlign: "center",
+      color: "#000",
+      borderRadius: 20
+  },
+  titleBar: {
+    alignItems: "flex-end",
+    paddingTop: 40,
+    paddingBottom: 10,
+},
   });
   
 

@@ -75,9 +75,7 @@ function Profile(props) {
         </Camera>
     )
 
-
     return (
-
         <SafeAreaView style={styles.container}>
             <View style={styles.titleBar}>
                 <Icon name="angle-left" size={20} color="#52575d" onPress={() => props.navigation.goBack()} />

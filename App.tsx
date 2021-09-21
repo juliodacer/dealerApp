@@ -26,7 +26,7 @@ const App = () => {
           <Drawer.Screen name="CuentaAhorros" component={SavingAccount} />
           <Drawer.Screen name="BuzonEspera" component={OrderBox} options={{ headerShown: false }} />
           <Drawer.Screen name="Ayuda" component={Help} />
-          <Drawer.Screen name="DetallePedido" component={OrderDetail} />
+          <Drawer.Screen name="DetallePedido" component={OrderDetail} options={{ headerShown: false }} />
         </Drawer.Navigator>
       </NavigationContainer>
     </OrderState>

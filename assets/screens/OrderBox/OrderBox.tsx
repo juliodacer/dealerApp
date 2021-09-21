@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useContext, useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView, Image, TextInput, Alert } from 'react-native'
+import { View, Text, StyleSheet, SafeAreaView, ScrollView, Image, TextInput, Alert, TouchableOpacityBase } from 'react-native'
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import OrderContext from '../../context/orders/orderContexts';
@@ -13,18 +13,34 @@ const OrderBox = () => {
             id: 1,
             product: "Helado de Vainilla con sabor a fresa",
             image: "https://cdn.pixabay.com/photo/2016/03/23/15/00/ice-cream-1274894_960_720.jpg",
-            price: 25,
-            origin: "Heladeria Rosita",
-            destiny: "Jr Callao 287",
+            price: 25.50,
+            origin: {
+                name: "Heladeria Rosita",
+                location: "Jr Prospero 425",
+                image: "https://cdn.pixabay.com/photo/2018/07/14/15/27/cafe-3537801_960_720.jpg"
+            },
+            destiny: {
+                name: "Piter Castle",
+                photo: "https://cdn.pixabay.com/photo/2016/11/18/17/46/house-1836070_960_720.jpg",
+                location: "Av. La marina 251",
+            },
             available: true
         },
         {
             id: 2,
             product: "Fresas con sabor a vainilla",
-            image: "https://cdn.pixabay.com/photo/2017/01/31/09/30/raspberries-2023404_960_720.jpg",
-            price: 30,
-            origin: "Frutas de Canadá",
-            destiny: "Calle Tacna 568",
+            image: "https://cdn.pixabay.com/photo/2016/04/24/19/41/strawberries-1350482_960_720.jpg",
+            price: 30.00,
+            origin: {
+                name: "Frutas de Canadá",
+                location: "Psje Alcides Carrion 365",
+                image: "https://cdn.pixabay.com/photo/2018/07/14/15/27/cafe-3537801_960_720.jpg"
+            },
+            destiny: {
+                name: "Maria la del Barrio",
+                photo: "https://cdn.pixabay.com/photo/2016/06/24/10/47/house-1477041_960_720.jpg",
+                location: "Tnte Miguel Grau 987"
+            },
             available: true
         },
         // {
@@ -164,90 +180,150 @@ const OrderBox = () => {
         ]);
     };
 
-    const acceptOrder = orderId => {
-       if(orders.orderId == false) {
-        Alert.alert('Ups!', 'Este pedido ya no está disponible', [
+    const previewSelectOrder = order => {
+        Alert.alert('Confirmar', 'Seguro que deseas tomar esta orden?', [
             {
-                text: 'Ok',
+                text: 'Si',
+                onPress: () => {
+                    selectOrder(order);
+                    navigation.navigate("DetallePedido");
+                }
             },
             {
-                text: 'Caballero nomas, ya perdí',
+                text: 'No',
             },
         ]);
-       }
+    }
+
+    const acceptOrder = orderId => {
+        if (orders.orderId == false) {
+            Alert.alert('Ups!', 'Este pedido ya no está disponible', [
+                {
+                    text: 'Ok',
+                },
+                {
+                    text: 'Caballero nomas, ya perdí',
+                },
+            ]);
+        }
     };
 
     const ListItem = ({ order }) => {
         return (
-            <SafeAreaView style={[styles.cartCard, { backgroundColor: order?.available ? "#fff" : "#E8E823" }]}>
-                <Image source={{ uri: order.image }} style={{ height: 80, width: 80, borderRadius: 10, marginLeft: 3 }} />
-                <View style={{ height: 100, marginHorizontal: 5, paddingVertical: 10, flex: 1, flexDirection: "row", alignItems: "center" }}>
-                    <View style={{ width: 160, marginRight: 5 }}>
-                        <View style={{ flexDirection: "row", alignItems: "center", marginVertical: 3 }}>
-                            <Icon name="utensils" size={12} style={{ marginRight: 6, marginLeft: 3}} />
-                            <Text style={{
-                                fontSize: 15,
-                                color: order?.available ? '#000' : "green",
-                                fontWeight: "bold"
-                            }}>{order?.product}</Text>
-                        </View>
-                        <View style={{ flexDirection: "row", alignItems: "center",marginVertical: 3 }}>
-                            <Icon name="store" size={12} style={{ marginRight: 5 }} />
-                            <Text style={{
-                                fontSize: 15,
-                                color: order?.available ? '#000' : "green",
-                                fontWeight: "bold"
-                            }}>{order?.origin}</Text>
-                        </View>
-                       <View style={{ flexDirection: "row", alignItems: "center", marginVertical: 3 }}>
-                       <Icon name="street-view" size={12} style={{ marginRight: 5, marginLeft: 2}} />
-                       <Text style={{
-                            fontSize: 15,
-                            color: order?.available ? '#000' : "green",
+            <SafeAreaView style={[styles.cartCard, { backgroundColor: "#fff", justifyContent: "space-around" }]}>
+                <Image source={{ uri: order.image }} style={{ height: 80, width: "20%", borderRadius: 10, marginLeft: 3 }} />
+                {/* <View style={{backgroundColor:"yellow", height: 100, marginHorizontal: 5, paddingVertical: 10, flex: 1, flexDirection: "row", alignItems: "center" }}> */}
+                <View style={{ width: "50%", marginHorizontal: 5 }}>
+                    <View style={{ flexDirection: "row", alignItems: "center", marginVertical: 1 }}>
+                        <Icon name="utensils" size={12} style={{ marginRight: 6, marginLeft: 3 }} />
+                        <Text style={{
+                            fontSize: 17,
+                            color: '#000',
                             fontWeight: "bold"
-                        }}>{order?.destiny}</Text>
-                       </View>
+                        }}>{order?.product}</Text>
                     </View>
-
-                    <View style={{ flexDirection: "row", width: "30%" }}>
-                        <TouchableOpacity
-                            disabled={order?.available ? false : true}
-                            onPress={() => {
-                                selectOrder(order);
-                                navigation.navigate("DetallePedido");
-                            }
-                            }
-                            style={{
-                                marginRight: 3, backgroundColor: order?.available ? "green" : "#88FD85",
-                                height: 50,
-                                width: 60,
-                                justifyContent: "center", alignItems: "center", borderRadius: 5
-                            }}>
-
+                    <View style={{ flexDirection: "row", alignItems: "center", marginVertical: 1 }}>
+                        <Icon name="store" size={12} style={{ marginRight: 5, color: '#747474' }} />
+                        <Text style={{
+                            fontSize: 15,
+                            color: '#747474',
+                            // fontWeight: "bold"
+                        }}>{order?.origin.location}</Text>
+                    </View>
+                    <View style={{ flexDirection: "row", alignItems: "center", marginVertical: 1 }}>
+                        <Icon name="street-view" size={12} style={{ marginRight: 6, marginLeft: 1, color: '#747474', }} />
+                        <Text style={{
+                            fontSize: 15,
+                            color: '#747474',
+                            // fontWeight: "bold"
+                        }}>{order?.destiny.location}</Text>
+                    </View>
+                    <View style={{ flexDirection: "row", alignItems: "center", marginVertical: 1 }}>
+                        <Icon name="money-bill-alt" size={12} style={{ marginRight: 5, marginLeft: 0, color: '#747474', }} />
+                        <View style={{ height: 16, width: "auto", backgroundColor: "green", padding: 3, justifyContent: "center", alignItems: "center", borderRadius: 5 }}>
                             <Text style={{
-                                fontWeight: "bold",
-                                fontSize: 15,
-                                color: "#fff"
-                            }}
-                            >Aceptar</Text>
-                        </TouchableOpacity>
 
-                        <TouchableOpacity disabled={order?.available ? false : true} onPress={() => deleteOrder(order?.id)} style={{ marginRight: 10, backgroundColor: order?.available ? "red" : "#FD8585", height: 50, width: 70, justifyContent: "center", alignItems: "center", borderRadius: 5 }}>
-                            <Text style={{ fontWeight: "bold", fontSize: 15, color: "#fff" }}>Rechazar</Text>
-                        </TouchableOpacity>
+                                fontSize: 15,
+                                color: '#fff',
+                                // fontWeight: "bold"
+                            }}>{`S/. ${order?.price}`}</Text>
+                        </View>
                     </View>
                 </View>
+
+                <View style={{ flexDirection: "column", width: "20%", alignItems: "center", justifyContent: "center", marginHorizontal: 3 }}>
+                    <TouchableOpacity
+                        disabled={order?.available ? false : true}
+                        onPress={() => {
+                            // selectOrder(order);
+                            previewSelectOrder(order);
+                        }
+                        }
+                        style={{
+                            marginHorizontal: 3,
+                            marginVertical: 2,
+                            backgroundColor: order?.available ? "green" : "#88FD85",
+                            height: 40,
+                            width: 70,
+                            justifyContent: "center",
+                            alignItems: "center",
+                            borderRadius: 10
+                        }}>
+
+                        <Text style={{
+                            fontWeight: "bold",
+                            fontSize: 15,
+                            color: "#fff"
+                        }}
+                        >
+                            Aceptar
+                        </Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                        disabled={order?.available ? false : true}
+                        onPress={() => deleteOrder(order?.id)}
+                        style={{
+                            marginHorizontal: 3,
+                            marginVertical: 2,
+                            backgroundColor: order?.available ? "red" : "#FD8585",
+                            height: 40,
+                            width: 70,
+                            justifyContent: "center",
+                            alignItems: "center",
+                            borderRadius: 10
+                        }}>
+                        <Text style={{
+                            fontWeight: "bold",
+                            fontSize: 15,
+                            color: "#fff"
+                        }}>
+                            Rechazar
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+                {/* </View> */}
             </SafeAreaView>
         )
     }
 
     return (
         <SafeAreaView style={{ backgroundColor: "#fff", flex: 1 }}>
-            <View style={styles.header}>
+            {/* <View style={styles.header}>
                 <Icon name="angle-left" size={28} />
                 <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Buzon de espera</Text>
+            </View> */}
+
+            <View style={styles.titleBar}>
+                <Icon name="angle-left" size={20} color="#52575d" onPress={() => navigation.goBack()} />
+                <Text style={{ fontWeight: "bold", fontSize: 18 }}>Buzon de espera</Text>
+               <TouchableOpacity onPress={() => navigation.openDrawer()}>
+               <Icon name="sliders-h" size={20} color="#52575d" />
+               </TouchableOpacity>
             </View>
-            <View style={{ marginTop:15, alignItems: "center", marginRight: 20, flexDirection: "row", justifyContent: "flex-end" }}>
+
+
+            <View style={{ marginTop: 15, alignItems: "center", marginRight: 20, flexDirection: "row", justifyContent: "flex-end" }}>
                 <Text style={{ fontSize: 20, fontWeight: 'bold', marginRight: 10 }}>Eliminar todo</Text>
                 <TouchableOpacity>
                     <Icon name="times-circle" color={"red"} size={20} onPress={clearAllOrders} />
@@ -281,10 +357,18 @@ const OrderBox = () => {
 
 const styles = StyleSheet.create({
     header: {
-        paddingVertical: 20,
+        marginTop: 40,
         flexDirection: 'row',
         alignItems: 'center',
         marginHorizontal: 20,
+    },
+    titleBar: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        paddingTop: 40,
+        paddingBottom: 10,
+        paddingHorizontal: 30,
     },
     cartCard: {
         height: 95,
