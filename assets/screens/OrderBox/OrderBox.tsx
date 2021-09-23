@@ -11,16 +11,23 @@ const OrderBox = () => {
     const [orders, setOrders] = useState([
         {
             id: 1,
-            product: "Helado de Vainilla con sabor a fresa",
-            image: "https://cdn.pixabay.com/photo/2016/03/23/15/00/ice-cream-1274894_960_720.jpg",
-            price: 25.50,
+            product: {
+                id: 1,
+                name: "Helado de Vainilla con sabor a fresa",
+                image: "https://cdn.pixabay.com/photo/2016/04/24/19/41/strawberries-1350482_960_720.jpg",
+                price: 12.00,
+                description: 'Helado elaborado a base de frutas propias de la region, cumpliendo todas las normas sanitarias correspondientes',
+                cream: "ketchup",
+                drink: "gaseosa"
+            }
+            ,
             origin: {
                 name: "Heladeria Rosita",
                 location: "Jr Prospero 425",
                 image: "https://cdn.pixabay.com/photo/2018/07/14/15/27/cafe-3537801_960_720.jpg"
             },
             destiny: {
-                name: "Piter Castle",
+                name: "Mariano Melgar Rengifo",
                 photo: "https://cdn.pixabay.com/photo/2016/11/18/17/46/house-1836070_960_720.jpg",
                 location: "Av. La marina 251",
             },
@@ -28,66 +35,28 @@ const OrderBox = () => {
         },
         {
             id: 2,
-            product: "Fresas con sabor a vainilla",
-            image: "https://cdn.pixabay.com/photo/2016/04/24/19/41/strawberries-1350482_960_720.jpg",
-            price: 30.00,
+            product: {
+                id: 2,
+                name: "1/4 de Pollo a la brasa mixto",
+                image: "https://images.pexels.com/photos/416471/pexels-photo-416471.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+                price: 18.00,
+                description: 'Pollo cocido con papas fritas, papas al hilo y arroz chaufa',
+                cream: "mayonesa",
+                drink: "refresco"
+            }
+            ,
             origin: {
-                name: "Frutas de Canadá",
-                location: "Psje Alcides Carrion 365",
+                name: "Carlos Chicken",
+                location: "Calle Trujillo 231",
                 image: "https://cdn.pixabay.com/photo/2018/07/14/15/27/cafe-3537801_960_720.jpg"
             },
             destiny: {
-                name: "Maria la del Barrio",
-                photo: "https://cdn.pixabay.com/photo/2016/06/24/10/47/house-1477041_960_720.jpg",
-                location: "Tnte Miguel Grau 987"
+                name: "Rosa Guevara Tosso",
+                photo: "https://cdn.pixabay.com/photo/2016/11/18/17/46/house-1836070_960_720.jpg",
+                location: "Av. Freyre 356",
             },
             available: true
         },
-        // {
-        //     id: 3,
-        //     product: "Pedido 3",
-        //     image: "https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-        //     price: 27,
-        //     origin: "Origen 3",
-        //     destiny: "Tienda 3",
-        //     available: false
-        // },
-        // {
-        //     id: 4,
-        //     product: "Pedido 4",
-        //     image: "https://images.pexels.com/photos/1410236/pexels-photo-1410236.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260",
-        //     price: 36,
-        //     origin: "Origen 4",
-        //     destiny: "Tienda 4",
-        //     available: "true"
-        // },
-        // {
-        //     id: 5,
-        //     product: "Pedido 5",
-        //     image: "https://images.pexels.com/photos/628776/pexels-photo-628776.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260",
-        //     price: 18,
-        //     origin: "Origen 5",
-        //     destiny: "Tienda 5",
-        //     available: true
-        // },
-        // {
-        //     id: 6,
-        //     product: "Pedido 6",
-        //     image: "https://images.pexels.com/photos/3535383/pexels-photo-3535383.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260",
-        //     price: 25,
-        //     origin: "Origen 6",
-        //     destiny: "Tienda 6",
-        //     available: true
-        // },
-        // {
-        //     id: 7,
-        //     product: "Pedido 7",
-        //     image: "https://images.pexels.com/photos/416471/pexels-photo-416471.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-        //     price: 31,
-        //     origin: "Origen 7",
-        //     destiny: "Tienda 7",
-        //     available: true
-        // }
     ])
 
     const { selectOrder } = useContext(OrderContext);
@@ -111,11 +80,17 @@ const OrderBox = () => {
         } else {
             const newOrder = {
                 id: Math.random(),
-                product: textInput,
-                image: "https://images.pexels.com/photos/3535383/pexels-photo-3535383.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260",
-                price: 33,
-                origin: `origen ${Math.random()}`,
-                destiny: `Tienda ${Math.random()}`,
+                product: {
+                    name: textInput,
+                    image: "https://images.pexels.com/photos/3535383/pexels-photo-3535383.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260",
+                    price: 33,
+                },
+                origin: {
+                    location: `Tienda ${Math.random()}`,
+                },
+                destiny: {
+                    location: `Usuario ${Math.random()}`,
+                },
                 available: true
             };
             setOrders([...orders, newOrder]);
@@ -165,7 +140,17 @@ const OrderBox = () => {
 
     const deleteOrder = orderId => {
         const newOrdersItem = orders.filter(item => item.id != orderId);
-        setOrders(newOrdersItem);
+
+        Alert.alert('Confirmar', 'Eliminar todas las órdenes?', [
+            {
+                text: 'Yes',
+                onPress: () => setOrders(newOrdersItem),
+            },
+            {
+                text: 'No',
+            },
+        ]);
+
     };
 
     const clearAllOrders = () => {
@@ -211,7 +196,7 @@ const OrderBox = () => {
     const ListItem = ({ order }) => {
         return (
             <SafeAreaView style={[styles.cartCard, { backgroundColor: "#fff", justifyContent: "space-around" }]}>
-                <Image source={{ uri: order.image }} style={{ height: 80, width: "20%", borderRadius: 10, marginLeft: 3 }} />
+                <Image source={{ uri: order.product.image }} style={{ height: 80, width: "20%", borderRadius: 10, marginLeft: 3 }} />
                 {/* <View style={{backgroundColor:"yellow", height: 100, marginHorizontal: 5, paddingVertical: 10, flex: 1, flexDirection: "row", alignItems: "center" }}> */}
                 <View style={{ width: "50%", marginHorizontal: 5 }}>
                     <View style={{ flexDirection: "row", alignItems: "center", marginVertical: 1 }}>
@@ -220,7 +205,7 @@ const OrderBox = () => {
                             fontSize: 17,
                             color: '#000',
                             fontWeight: "bold"
-                        }}>{order?.product}</Text>
+                        }}>{order?.product.name}</Text>
                     </View>
                     <View style={{ flexDirection: "row", alignItems: "center", marginVertical: 1 }}>
                         <Icon name="store" size={12} style={{ marginRight: 5, color: '#747474' }} />
@@ -246,17 +231,17 @@ const OrderBox = () => {
                                 fontSize: 15,
                                 color: '#fff',
                                 // fontWeight: "bold"
-                            }}>{`S/. ${order?.price}`}</Text>
+                            }}>{`S/. ${order?.product.price}`}</Text>
                         </View>
                     </View>
                 </View>
 
                 <View style={{ flexDirection: "column", width: "20%", alignItems: "center", justifyContent: "center", marginHorizontal: 3 }}>
                     <TouchableOpacity
-                        disabled={order?.available ? false : true}
                         onPress={() => {
-                            // selectOrder(order);
-                            previewSelectOrder(order);
+                            selectOrder(order);
+                            navigation.navigate("DetallePedido");
+                            //previewSelectOrder(order);
                         }
                         }
                         style={{
@@ -317,9 +302,9 @@ const OrderBox = () => {
             <View style={styles.titleBar}>
                 <Icon name="angle-left" size={20} color="#52575d" onPress={() => navigation.goBack()} />
                 <Text style={{ fontWeight: "bold", fontSize: 18 }}>Buzon de espera</Text>
-               <TouchableOpacity onPress={() => navigation.openDrawer()}>
-               <Icon name="sliders-h" size={20} color="#52575d" />
-               </TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.openDrawer()}>
+                    <Icon name="sliders-h" size={20} color="#52575d" />
+                </TouchableOpacity>
             </View>
 
 

@@ -23,7 +23,7 @@ const OrderState = props => {
         <OrderContext.Provider
             value={{
                 order: state.order,
-                product: state.product,
+                product: state.order.product,
                 selectOrder
             }}
         >
